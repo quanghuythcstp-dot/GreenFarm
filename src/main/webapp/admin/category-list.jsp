@@ -1,0 +1,195 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Category Management - GreenFarm Admin</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+</head>
+<body class="bg-light">
+
+    <!-- Admin Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-success">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold fs-4" href="${pageContext.request.contextPath}/admin/products">
+                <i class="bi bi-leaf-fill me-2"></i>GreenFarm Admin
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarAdmin">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarAdmin">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="${pageContext.request.contextPath}/admin/dashboard">
+                            <i class="bi bi-speedometer2 me-1"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="${pageContext.request.contextPath}/admin/products">
+                            <i class="bi bi-box-seam me-1"></i>Products
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="${pageContext.request.contextPath}/admin/categories">
+                            <i class="bi bi-grid me-1"></i>Categories
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="${pageContext.request.contextPath}/admin/customers">
+                            <i class="bi bi-people me-1"></i>Customers
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="${pageContext.request.contextPath}/admin/orders">
+                            <i class="bi bi-receipt me-1"></i>Orders
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="${pageContext.request.contextPath}/admin/messages">
+                            <i class="bi bi-envelope me-1"></i>Messages
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="${pageContext.request.contextPath}/admin/delivery-config">
+                            <i class="bi bi-truck me-1"></i>Shipping
+                        </a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="${pageContext.request.contextPath}/home">
+                            <i class="bi bi-house me-1"></i>Back to Site
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="${pageContext.request.contextPath}/logout">
+                            <i class="bi bi-box-arrow-right me-1"></i>Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <div class="bg-white border-bottom py-3">
+        <div class="container-fluid">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <h4 class="mb-0 text-success">
+                    <i class="bi bi-grid me-2"></i>Category Management
+                </h4>
+                <div class="d-flex gap-2">
+                    <a href="${pageContext.request.contextPath}/admin/products"
+                       class="btn btn-outline-secondary">
+                        <i class="bi bi-box-seam me-1"></i>Back to Products
+                    </a>
+                    <a href="${pageContext.request.contextPath}/admin/categories?action=add"
+                       class="btn btn-success">
+                        <i class="bi bi-plus-circle me-1"></i>Add New Category
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container-fluid py-4">
+
+        <!-- Error Alert (shown when delete is blocked) -->
+        <c:if test="${not empty error}">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>${error}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        </c:if>
+
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-0">
+                <c:choose>
+                    <c:when test="${empty categoryList}">
+                        <div class="text-center py-5">
+                            <i class="bi bi-grid display-1 text-muted"></i>
+                            <h5 class="mt-3 text-muted">No categories found.</h5>
+                            <a href="${pageContext.request.contextPath}/admin/categories?action=add"
+                               class="btn btn-success mt-3">
+                                <i class="bi bi-plus-circle me-1"></i>Add Your First Category
+                            </a>
+                        </div>
+                    </c:when>
+                    <c:otherwise>
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead class="table-success">
+                                    <tr>
+                                        <th class="ps-3" style="width: 80px;">ID</th>
+                                        <th>Category Name</th>
+                                        <th>Description</th>
+                                        <th style="width: 160px;">Products</th>
+                                        <th class="text-center" style="width: 130px;">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <c:forEach var="category" items="${categoryList}" varStatus="status">
+                                        <tr>
+                                            <td class="ps-3 fw-semibold">${category.categoryId}</td>
+                                            <td class="fw-semibold">${category.categoryName}</td>
+                                            <td class="text-muted">
+                                                <c:choose>
+                                                    <c:when test="${not empty category.description}">
+                                                        ${category.description}
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <span class="text-muted fst-italic">No description</span>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </td>
+                                            <td>
+                                                <c:choose>
+                                                    <c:when test="${productCounts[status.index] > 0}">
+                                                        <span class="badge bg-success">
+                                                            <i class="bi bi-box-seam me-1"></i>${productCounts[status.index]} product(s)
+                                                        </span>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <span class="badge bg-secondary">No products</span>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </td>
+                                            <td class="text-center">
+                                                <!-- Edit -->
+                                                <a href="${pageContext.request.contextPath}/admin/categories?action=edit&id=${category.categoryId}"
+                                                   class="btn btn-sm btn-outline-primary me-1"
+                                                   title="Edit category">
+                                                    <i class="bi bi-pencil-square"></i>
+                                                </a>
+                                                <!-- Delete -->
+                                                <form action="${pageContext.request.contextPath}/admin/categories"
+                                                      method="post"
+                                                      style="display: inline-block;"
+                                                      onsubmit="return confirm('Are you sure you want to delete the category \'${category.categoryName}\'?');">
+                                                    <input type="hidden" name="action" value="delete">
+                                                    <input type="hidden" name="id" value="${category.categoryId}">
+                                                    <button type="submit"
+                                                            class="btn btn-sm btn-outline-danger"
+                                                            title="Delete category">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
+                                </tbody>
+                            </table>
+                        </div>
+                    </c:otherwise>
+                </c:choose>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

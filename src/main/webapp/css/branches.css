@@ -1,0 +1,403 @@
+/* ============================================================
+   GreenFarm — Branches / Store Locator Page
+   All classes prefixed  br-  to avoid global side effects
+   ============================================================ */
+
+:root {
+    --br-green:      #198754;
+    --br-dark:       #0a3622;
+    --br-light:      #d1e7dd;
+    --br-white:      #ffffff;
+    --br-gray-bg:    #f8f9fa;
+    --br-gray-bd:    #e9ecef;
+    --br-radius:     14px;
+    --br-shadow-sm:  0 2px 12px rgba(0,0,0,.07);
+    --br-shadow-md:  0 6px 24px rgba(0,0,0,.12);
+    --br-transition: 0.24s ease;
+}
+
+/* ── Hero ── */
+.br-hero {
+    height: 500px;
+    max-height: 500px;
+    background: linear-gradient(135deg, rgba(10,54,34,.86) 0%, rgba(25,135,84,.72) 100%);
+    display: flex;
+    align-items: center;
+    color: var(--br-white);
+    position: relative;
+    overflow: hidden;
+}
+
+.br-hero-bg-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    z-index: 0;
+    opacity: .38;
+}
+
+.br-hero .container {
+    position: relative;
+    z-index: 1;
+}
+
+.br-hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: rgba(255,255,255,.14);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255,255,255,.28);
+    border-radius: 50px;
+    padding: 6px 18px;
+    font-size: .8rem;
+    font-weight: 600;
+    letter-spacing: .4px;
+    margin-bottom: 20px;
+    color: var(--br-white);
+}
+
+.br-hero h1 {
+    font-size: clamp(2rem, 5vw, 3.4rem);
+    font-weight: 800;
+    line-height: 1.12;
+    text-shadow: 0 2px 14px rgba(0,0,0,.25);
+}
+
+.br-hero .lead {
+    font-size: 1.05rem;
+    opacity: .9;
+    max-width: 520px;
+}
+
+/* ── Section helpers ── */
+.br-tag {
+    display: inline-block;
+    background: var(--br-light);
+    color: var(--br-dark);
+    font-size: .76rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 50px;
+    margin-bottom: 10px;
+}
+
+.br-title {
+    font-size: clamp(1.4rem, 3.5vw, 2.1rem);
+    font-weight: 800;
+    color: var(--br-dark);
+    line-height: 1.2;
+}
+
+/* ── About network section ── */
+.br-about-img {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 20px;
+    box-shadow: var(--br-shadow-md);
+}
+
+.br-network-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 20px;
+}
+
+.br-network-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: var(--br-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: var(--br-green);
+    flex-shrink: 0;
+    transition: background var(--br-transition);
+}
+
+.br-network-item:hover .br-network-icon {
+    background: var(--br-green);
+    color: var(--br-white);
+}
+
+/* ── Store cards ── */
+.br-store-card {
+    border: 1.5px solid var(--br-gray-bd);
+    border-radius: var(--br-radius);
+    background: var(--br-white);
+    overflow: hidden;
+    height: 100%;
+    transition: border-color var(--br-transition), box-shadow var(--br-transition), transform var(--br-transition);
+}
+
+.br-store-card:hover {
+    border-color: var(--br-green);
+    box-shadow: var(--br-shadow-md);
+    transform: translateY(-4px);
+}
+
+.br-store-card.active-branch {
+    border-color: var(--br-green);
+    box-shadow: 0 0 0 3px rgba(25,135,84,.18);
+}
+
+.br-store-img-wrap {
+    position: relative;
+    overflow: hidden;
+    height: 190px;
+}
+
+.br-store-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform .4s ease;
+}
+
+.br-store-card:hover .br-store-img-wrap img { transform: scale(1.05); }
+
+.br-store-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: var(--br-green);
+    color: var(--br-white);
+    font-size: .72rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 50px;
+    letter-spacing: .3px;
+}
+
+.br-store-body { padding: 18px; }
+
+.br-store-name {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--br-dark);
+    margin-bottom: 10px;
+}
+
+.br-store-info {
+    font-size: .82rem;
+    color: #495057;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 7px;
+    line-height: 1.45;
+}
+
+.br-store-info i {
+    color: var(--br-green);
+    font-size: .9rem;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+.br-services {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin: 12px 0;
+}
+
+.br-service-tag {
+    background: var(--br-light);
+    color: var(--br-dark);
+    font-size: .7rem;
+    font-weight: 600;
+    padding: 2px 9px;
+    border-radius: 50px;
+}
+
+.br-view-map-btn {
+    width: 100%;
+    background: var(--br-green);
+    color: var(--br-white);
+    border: none;
+    border-radius: 8px;
+    padding: 9px 0;
+    font-size: .85rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    transition: background var(--br-transition);
+    text-decoration: none;
+}
+
+.br-view-map-btn:hover {
+    background: var(--br-dark);
+    color: var(--br-white);
+}
+
+/* ── Map section ── */
+.br-map-wrapper {
+    border-radius: var(--br-radius);
+    overflow: hidden;
+    box-shadow: var(--br-shadow-md);
+    border: 1.5px solid var(--br-gray-bd);
+    background: var(--br-gray-bg);
+}
+
+.br-map-wrapper iframe {
+    display: block;
+    width: 100%;
+    height: 550px;
+    border: none;
+    transition: opacity .3s ease;
+}
+
+/* ── Statistics ── */
+.br-stat-card {
+    background: var(--br-white);
+    border: 1.5px solid var(--br-gray-bd);
+    border-radius: var(--br-radius);
+    padding: 28px 16px;
+    text-align: center;
+    height: 100%;
+    transition: border-color var(--br-transition), box-shadow var(--br-transition), transform var(--br-transition);
+}
+
+.br-stat-card:hover {
+    border-color: var(--br-green);
+    box-shadow: var(--br-shadow-md);
+    transform: translateY(-3px);
+}
+
+.br-stat-icon {
+    width: 58px;
+    height: 58px;
+    border-radius: 14px;
+    background: var(--br-light);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    color: var(--br-green);
+    margin-bottom: 14px;
+    transition: background var(--br-transition);
+}
+
+.br-stat-card:hover .br-stat-icon {
+    background: var(--br-green);
+    color: var(--br-white);
+}
+
+.br-stat-num {
+    font-size: 1.9rem;
+    font-weight: 800;
+    color: var(--br-dark);
+    line-height: 1;
+    margin-bottom: 4px;
+}
+
+.br-stat-lbl {
+    font-size: .82rem;
+    color: #6c757d;
+    font-weight: 500;
+}
+
+/* ── Why Visit cards ── */
+.br-feature-card {
+    background: var(--br-white);
+    border: 1.5px solid var(--br-gray-bd);
+    border-radius: var(--br-radius);
+    padding: 28px 20px;
+    text-align: center;
+    height: 100%;
+    transition: border-color var(--br-transition), box-shadow var(--br-transition), transform var(--br-transition);
+}
+
+.br-feature-card:hover {
+    border-color: var(--br-green);
+    box-shadow: var(--br-shadow-md);
+    transform: translateY(-4px);
+}
+
+.br-feature-icon {
+    width: 62px;
+    height: 62px;
+    border-radius: 16px;
+    background: var(--br-light);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.75rem;
+    color: var(--br-green);
+    margin-bottom: 16px;
+    transition: background var(--br-transition);
+}
+
+.br-feature-card:hover .br-feature-icon {
+    background: var(--br-green);
+    color: var(--br-white);
+}
+
+/* ── Contact section ── */
+.br-contact-card {
+    background: var(--br-white);
+    border: 1.5px solid var(--br-gray-bd);
+    border-radius: var(--br-radius);
+    padding: 24px 20px;
+    height: 100%;
+    transition: border-color var(--br-transition), box-shadow var(--br-transition);
+}
+
+.br-contact-card:hover {
+    border-color: var(--br-green);
+    box-shadow: var(--br-shadow-sm);
+}
+
+.br-contact-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: var(--br-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    color: var(--br-green);
+    margin-bottom: 14px;
+}
+
+/* ── CTA section ── */
+.br-cta {
+    background: linear-gradient(135deg, var(--br-dark) 0%, var(--br-green) 100%);
+    border-radius: 20px;
+    padding: 60px 40px;
+    color: var(--br-white);
+    position: relative;
+    overflow: hidden;
+}
+
+.br-cta::before {
+    content: '';
+    position: absolute;
+    right: -60px; top: -60px;
+    width: 260px; height: 260px;
+    background: rgba(255,255,255,.05);
+    border-radius: 50%;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+    .br-hero     { height: 380px; max-height: 380px; }
+    .br-about-img{ height: 240px; }
+    .br-cta      { padding: 36px 20px; }
+    .br-map-wrapper iframe { height: 360px; }
+}
