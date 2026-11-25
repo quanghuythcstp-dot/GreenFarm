@@ -273,7 +273,12 @@ public class ProductDAO {
         sql.append("ORDER BY productId ")
            .append("OFFSET ? ROWS FETCH NEXT ? ROWS ONLY");
 
-        try (Connection conn = dbContext.getConnection();
+        Connection conn = dbContext.getConnection();
+        if (conn == null) {
+            System.err.println("getProductsPaged: DB connection is null, returning empty list");
+            return list;
+        }
+        try (conn;
              PreparedStatement ps = conn.prepareStatement(sql.toString())) {
             int idx = 1;
             if (hasKeyword)  ps.setString(idx++, "%" + keyword + "%");
@@ -284,7 +289,7 @@ public class ProductDAO {
                 while (rs.next()) list.add(mapRow(rs));
             }
         } catch (SQLException e) {
-            System.out.println("getProductsPaged error: " + e.getMessage());
+            System.err.println("getProductsPaged error: " + e.getMessage());
         }
         return list;
     }

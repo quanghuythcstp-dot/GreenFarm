@@ -19,7 +19,14 @@ public class AboutServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // Load 6 featured products for the Featured Products section
-        List<Product> featuredProducts = productDAO.getProductsPaged("", 0, 0, 6);
+        // If DB is unavailable, default to empty list so the page still renders
+        List<Product> featuredProducts;
+        try {
+            featuredProducts = productDAO.getProductsPaged("", 0, 0, 6);
+        } catch (Exception e) {
+            System.err.println("AboutServlet: could not load featured products - " + e.getMessage());
+            featuredProducts = new java.util.ArrayList<>();
+        }
         request.setAttribute("featuredProducts", featuredProducts);
         request.getRequestDispatcher("/about.jsp").forward(request, response);
     }
